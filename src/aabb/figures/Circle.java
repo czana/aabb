@@ -12,7 +12,6 @@ public class Circle extends Ellipse2D.Double implements IFigure {
 		super();
 	}
 
-    @Override
     public void paint(Graphics g) {
 
     }
