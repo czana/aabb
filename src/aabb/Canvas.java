@@ -10,10 +10,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
+import aabb.figures.IFigure;
+
 
 public class Canvas extends JPanel {
 
-	private ArrayList<RectangularShape> list = new ArrayList<RectangularShape>();
+	private ArrayList<IFigure> list = new ArrayList<IFigure>();
 
 	public Canvas() {
 		setPreferredSize(new Dimension(800, 600));
@@ -22,14 +24,14 @@ public class Canvas extends JPanel {
         bindListeners();
 	}
 
-	public void addFigure(RectangularShape figure) {
+	public void addFigure(IFigure figure) {
 		list.add(figure);
 	}
 
     private void bindListeners() {
         MouseSupport mouseSupport = new MouseSupport();
         this.addMouseListener(mouseSupport);
-        this.addMouseListener(mouseSupport);
+        this.addMouseMotionListener(mouseSupport);
     }
 
 	@Override
@@ -42,18 +44,23 @@ public class Canvas extends JPanel {
     private class MouseSupport extends MouseAdapter implements MouseMotionListener {
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mousePressed(MouseEvent e) {
+            //System.out.println("start dnd at " + e.);
+        }
 
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            System.out.println("stop drag");
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-
+            System.out.println("start drag");
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-
+            //not used here
         }
 
     }
