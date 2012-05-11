@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 import aabb.figures.*;
 
-public class AABB {
+public class Main {
 
     public void createGUI() {
         JFrame frame = new JFrame("AABB Test");
@@ -17,8 +17,10 @@ public class AABB {
 
     private Canvas initCanvas() {
         Canvas canvas = new Canvas();
-        canvas.addFigure(new Circle(500, 250, 80));
-        canvas.addFigure(new Circle(200, 250, 80));
+        canvas.addFigure(new Circle(500, 150, 60, 20));
+        canvas.addFigure(new Circle(200, 150, 40, 15));
+        canvas.addFigure(new Circle(500, 350, 55, 20));
+        canvas.addFigure(new Circle(200, 350, 90, 25));
         return canvas;
     }
 
@@ -27,7 +29,7 @@ public class AABB {
 
             @Override
             public void run() {
-                new AABB().createGUI();
+                new Main().createGUI();
             }
         });
     }

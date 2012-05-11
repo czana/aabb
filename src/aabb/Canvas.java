@@ -18,7 +18,8 @@ import aabb.figures.Circle;
 import java.awt.RenderingHints;
 
 public class Canvas extends JPanel {
-
+    
+    public static int tmp = 0;
     private ArrayList<Circle> list = new ArrayList<Circle>();
     private Circle draggedFigure = null;
 
@@ -49,7 +50,6 @@ public class Canvas extends JPanel {
         Iterator<Circle> i = list.iterator();
         while (i.hasNext()) {
             Circle figure = i.next();
-            figure.setAabb();
             figure.paint(g);
         }
     }
@@ -75,11 +75,8 @@ public class Canvas extends JPanel {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            if (draggedFigure != null) {
-                draggedFigure.x = e.getX() - draggedFigure.getWidth() / 2;
-                draggedFigure.y = e.getY() - draggedFigure.getHeight() / 2;
-            }
-            list.get(0).checkAabbCollision(list.get(1));
+            draggedFigure.updatePosition(e.getX(), e.getY());
+            draggedFigure.checkAabbCollision(list);
             repaint();
         }
 

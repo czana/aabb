@@ -3,7 +3,7 @@
 
     <property name="app_name" value="AABB" />
     <property name="main_package" value="aabb" />
-    <property name="main_class" value="AABB" />
+    <property name="main_class" value="Main" />
     <property name="full_main_class" value="${main_package}.${main_class}" />
     <property name="src" value="src" />
     <property name="release" value="release" />
