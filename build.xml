@@ -2,7 +2,7 @@
 <project name="AABB" default="build" basedir=".">
 
     <property name="app_name" value="AABB" />
-    <property name="main_package" value="AABB" />
+    <property name="main_package" value="aabb" />
     <property name="main_class" value="AABB" />
     <property name="full_main_class" value="${main_package}.${main_class}" />
     <property name="src" value="src" />
@@ -46,7 +46,7 @@
 
    <target name="exe" depends="build">
       <java fork="yes" failonerror="yes" classname="${full_main_class}">
-          <classpath refid="exe_path"/> 
+          <classpath refid="exe_path"/>
           <arg line=""/>
       </java>
    </target>
