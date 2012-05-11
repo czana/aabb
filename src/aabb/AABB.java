@@ -18,7 +18,6 @@ public class AABB {
         Canvas canvas = new Canvas();
 
         canvas.addFigure(new Circle());
-        canvas.addFigure(new Square());
 
         return canvas;
     }

@@ -11,11 +11,12 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
 import aabb.figures.IFigure;
+import aabb.figures.Circle;
 
 
 public class Canvas extends JPanel {
 
-	private ArrayList<IFigure> list = new ArrayList<IFigure>();
+	private ArrayList<Circle> list = new ArrayList<Circle>();
 
 	public Canvas() {
 		setPreferredSize(new Dimension(800, 600));
@@ -24,7 +25,7 @@ public class Canvas extends JPanel {
         bindListeners();
 	}
 
-	public void addFigure(IFigure figure) {
+	public void addFigure(Circle figure) {
 		list.add(figure);
 	}
 
@@ -45,17 +46,17 @@ public class Canvas extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            //System.out.println("start dnd at " + e.);
+            System.out.println("start dnd at " + e.getPoint());
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            System.out.println("stop drag");
+            System.out.println("stop dnd at " + e.getPoint());
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            System.out.println("start drag");
+            System.out.println("stop dnd at " + e.getPoint());
         }
 
         @Override
