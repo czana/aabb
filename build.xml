@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project name="AABB" default="build" basedir=".">
+
+    <property name="app_name" value="AABB" />
+    <property name="main_package" value="AABB" />
+    <property name="main_class" value="AABB" />
+    <property name="full_main_class" value="${main_package}.${main_class}" />
+    <property name="src" value="src" />
+    <property name="release" value="release" />
+    <property name="res_dir" value="res" />
+    <property name="bin" value="bin" />
+
+    <path id="src_path">
+        <dirset dir="${basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+    <path id="exe_path">
+        <pathelement location="${bin}/${app_name}.jar" />
+    </path>
+
+    <target name="clean" description="Delete *.class">
+        <delete>
+            <fileset dir="${release}" includes="**/*.class" />
+        </delete>
+    </target>
+
+    <target name="compile" description="Compile *.java">
+	<mkdir dir="${release}" />
+        <javac srcdir="${src}" destdir="${release}" debug="on">
+            <src refid="src_path" />
+        </javac>
+    </target>
+
+    <target name="build" depends="compile" description="Compile and create .jar file">
+	<mkdir dir="${bin}" />
+        <jar jarfile="${bin}/${app_name}.jar">
+            <manifest>
+                <attribute name="Main-Class" value="${full_main_class}" />
+            </manifest>
+            <fileset dir="${release}" includes="**/*.class" />
+	    <fileset dir="${res_dir}" />
+        </jar>
+    </target>
+
+   <target name="exe" depends="build">
+      <java fork="yes" failonerror="yes" classname="${full_main_class}">
+          <classpath refid="exe_path"/> 
+          <arg line=""/>
+      </java>
+   </target>
+
+    <target name="rebuild" depends="clean, build" />
+
+</project>
+
+
