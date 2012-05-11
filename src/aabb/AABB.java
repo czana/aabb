@@ -17,7 +17,13 @@ public class AABB {
     private Canvas initCanvas() {
         Canvas canvas = new Canvas();
 
-        canvas.addFigure(new Circle());
+		Circle circle = new Circle();
+		circle.x = 100;
+		circle.y = 100;
+		circle.width = 20;
+		circle.height = 20;
+
+        canvas.addFigure(circle);
 
         return canvas;
     }
