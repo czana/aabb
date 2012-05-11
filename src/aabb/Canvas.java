@@ -10,21 +10,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
-
 public class Canvas extends JPanel {
 
-	private ArrayList<RectangularShape> list = new ArrayList<RectangularShape>();
+    private ArrayList<RectangularShape> list = new ArrayList<RectangularShape>();
 
-	public Canvas() {
-		setPreferredSize(new Dimension(800, 600));
-		setBackground(Color.GREEN);
+    public Canvas() {
+        setPreferredSize(new Dimension(800, 600));
+        setBackground(Color.GREEN);
 
         bindListeners();
-	}
+    }
 
-	public void addFigure(RectangularShape figure) {
-		list.add(figure);
-	}
+    public void addFigure(RectangularShape figure) {
+        list.add(figure);
+    }
 
     private void bindListeners() {
         MouseSupport mouseSupport = new MouseSupport();
@@ -32,30 +31,25 @@ public class Canvas extends JPanel {
         this.addMouseListener(mouseSupport);
     }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+    }
 
-
-	}
+/* PRIVATE CLASSES */
 
     private class MouseSupport extends MouseAdapter implements MouseMotionListener {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
         }
 
         @Override
         public void mouseDragged(MouseEvent e) {
-
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-
         }
-
     }
-
 }
