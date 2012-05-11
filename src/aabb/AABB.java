@@ -11,20 +11,14 @@ public class AABB {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(initCanvas());
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.show();
     }
 
     private Canvas initCanvas() {
         Canvas canvas = new Canvas();
-
-		Circle circle = new Circle();
-		circle.x = 100;
-		circle.y = 100;
-		circle.width = 20;
-		circle.height = 20;
-
-        canvas.addFigure(circle);
-
+        canvas.addFigure(new Circle(500, 250, 80));
+        canvas.addFigure(new Circle(200, 250, 80));
         return canvas;
     }
 

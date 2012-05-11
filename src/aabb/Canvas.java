@@ -15,23 +15,23 @@ import java.awt.Point;
 
 import aabb.figures.IFigure;
 import aabb.figures.Circle;
-
+import java.awt.RenderingHints;
 
 public class Canvas extends JPanel {
 
-	private ArrayList<Circle> list = new ArrayList<Circle>();
-	private Circle draggedFigure = null;
+    private ArrayList<Circle> list = new ArrayList<Circle>();
+    private Circle draggedFigure = null;
 
-	public Canvas() {
-		setPreferredSize(new Dimension(800, 600));
-		setBackground(Color.GREEN);
+    public Canvas() {
+        setPreferredSize(new Dimension(800, 600));
+        setBackground(Color.WHITE);
 
         bindListeners();
-	}
+    }
 
-	public void addFigure(Circle figure) {
-		list.add(figure);
-	}
+    public void addFigure(Circle figure) {
+        list.add(figure);
+    }
 
     private void bindListeners() {
         MouseSupport mouseSupport = new MouseSupport();
@@ -39,36 +39,34 @@ public class Canvas extends JPanel {
         this.addMouseMotionListener(mouseSupport);
     }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-		Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		Iterator<Circle> i = list.iterator();
+        Iterator<Circle> i = list.iterator();
+        while (i.hasNext()) {
+            Circle figure = i.next();
+            figure.setAabb();
+            figure.paint(g);
+        }
+    }
 
-		while (i.hasNext()) {
-			Circle figure = i.next();
-			g2.draw(figure);
-		}
-	}
+    public Circle findFigure(Point point) {
+        Iterator<Circle> i = list.iterator();
 
-	public Circle findFigure(Point point) {
-		Iterator<Circle> i = list.iterator();
-
-		while (i.hasNext()) {
-			Circle figure = i.next();
-			if (figure.contains(point)) {
-				return figure;
-			}
-
-		}
-
-		return null;
-	}
+        while (i.hasNext()) {
+            Circle figure = i.next();
+            if (figure.contains(point)) {
+                return figure;
+            }
+        }
+        return null;
+    }
 
     private class MouseSupport extends MouseAdapter implements MouseMotionListener {
-
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -78,17 +76,15 @@ public class Canvas extends JPanel {
         @Override
         public void mouseDragged(MouseEvent e) {
             if (draggedFigure != null) {
-            	draggedFigure.x = e.getX();
-            	draggedFigure.y = e.getY();
+                draggedFigure.x = e.getX() - draggedFigure.getWidth() / 2;
+                draggedFigure.y = e.getY() - draggedFigure.getHeight() / 2;
             }
+            list.get(0).checkAabbCollision(list.get(1));
             repaint();
         }
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            //not used here
         }
-
     }
-
 }
