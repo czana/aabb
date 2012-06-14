@@ -17,39 +17,59 @@ public class Circle extends Ellipse2D.Double implements IFigure {
     Ellipse2D.Double collisionRange;
     int RANGE;
     int MARGIN = 1;
-    private ArrayList<AABB> boxes = new ArrayList<AABB>();
+    public ArrayList<AABB> boxes = new ArrayList<AABB>();
+    double x_move;
+    double y_move;
     Color color;
+    boolean collide = false;
+    public static int BOX_SIZE = 10;
+    static int tmp = 0;
+    boolean curve;
 
-    public Circle(double x, double y, double size, int colRange) {
+    public Circle(double x, double y, double size, int colRange, boolean curve) {
         super(x, y, size, size);
-        color = new Color(getR(100), getR(100), getR(100) + 100);
+        color = new Color(getR(100), getR(100), getR(120) + 100);
+        this.curve = curve;
 
         RANGE = colRange;
         collisionRange = new Ellipse2D.Double(getX() - RANGE, getY() - RANGE, getWidth() + RANGE * 2, getHeight() + RANGE * 2);
 
-        boxes.add(new AABB(getX() - MARGIN, getY() - MARGIN, getWidth() + MARGIN * 2));
         setAabb();
     }
 
     public void checkAabbCollision(ArrayList<Circle> circles) {//AABB
         for (Circle circle : circles) {
-            AABB box = circle.boxes.get(0);
-            AABB aabb = boxes.get(0);
+            if (circle != this) {
+                for (AABB aabb : boxes) {
+                    for (AABB box : circle.boxes) {
 
-            if (Math.sqrt(Math.pow(box.getCenterX() - aabb.getCenterX(), 2) + Math.pow(box.getCenterY() - aabb.getCenterY(), 2)) < circle.collisionRange.width / 2 + collisionRange.width / 2
-                    && !box.equals(aabb)) {
+                        if (Math.sqrt(Math.pow(box.getCenterX() - aabb.getCenterX(), 2) + Math.pow(box.getCenterY() - aabb.getCenterY(), 2)) < circle.collisionRange.width / 2 + collisionRange.width / 2
+                                && !box.equals(aabb)) {
 
-                System.out.println(Canvas.tmp++);
+                            if (aabb.getMinX() > box.getMaxX() || aabb.getMaxX() < box.getMinX() || aabb.getMinY() > box.getMaxY() || aabb.getMaxY() < box.getMinY()) {
+                                aabb.collide = false;
+                                box.collide = false;
+                            } else {
+                                System.out.println(tmp++);
+                                aabb.collide = true;
+                                box.collide = true;
+                            }
 
-                if (aabb.getMinX() > box.getMaxX() || aabb.getMaxX() < box.getMinX() || aabb.getMinY() > box.getMaxY() || aabb.getMaxY() < box.getMinY()) {
-                    aabb.collide = false;
-                    box.collide = false;
-                } else {
-                    aabb.collide = true;
-                    box.collide = true;
+                        }
+                    }
                 }
             }
         }
+    }
+
+    public boolean collide(AABB aabb, ArrayList<AABB> boxes) {
+        for (AABB box : boxes) {
+            if (aabb.getMinX() > box.getMaxX() || aabb.getMaxX() < box.getMinX() || aabb.getMinY() > box.getMaxY() || aabb.getMaxY() < box.getMinY()) {
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -63,20 +83,34 @@ public class Circle extends Ellipse2D.Double implements IFigure {
         g2.setColor(Color.lightGray);
         g2.draw(collisionRange);
 
+        if (curve) {
+            Rectangle2D.Double r1 = new Rectangle2D.Double(this.x, this.y + getWidth() / 2 - 4, 25, 60);
+            Rectangle2D.Double r2 = new Rectangle2D.Double(this.x + 25, this.y - getWidth() / 2 - 6, 25, 60);
+            g2.setColor(color);
+            g2.fill(r1);
+            g2.fill(r2);
+        }
+
         for (AABB aabb : boxes) {
             aabb.paint(g);
         }
     }
 
     public void updatePosition(int x, int y) {
+        x_move = this.x;
+        y_move = this.y;
         this.x = x - width / 2;
         this.y = y - width / 2;
+        x_move -= this.x;
+        y_move -= this.y;
         setAabb();
         setCollisionRange();
     }
 
     public void setAabb() {
-        boxes.get(0).setRect(getX() - MARGIN, getY() - MARGIN, getWidth() + MARGIN * 2, getHeight() + MARGIN * 2);
+        for (AABB aabb : boxes) {
+            aabb.setRect(aabb.getX() - x_move, aabb.getY() - y_move, BOX_SIZE, BOX_SIZE);
+        }
     }
 
     public void setCollisionRange() {
